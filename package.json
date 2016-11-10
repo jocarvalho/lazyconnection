@@ -1,0 +1,16 @@
+{
+  "name": "lazyConnections",
+  "version": "1.0.0",
+  "description":"Simple lazy/cached connections for mongodb.",
+  "main":"lazyConnections.js",
+  "dependencies": {
+    "mongodb": "^2.0.42"
+  },
+  "scripts": {
+      "test": "./node_modules/.bin/mocha --reporter spec"
+  },
+  "devDependencies": {
+	    "mocha": "~1.16.2",
+	    "chai": "~1.8.1"
+	  }
+}

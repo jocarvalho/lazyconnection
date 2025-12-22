@@ -1,0 +1,92 @@
+name: Triagem com IA
+on:
+  workflow_dispatch:
+    inputs:
+      build-deploy:
+        description: "O que deseja fazer?"
+        required: false
+        default: Somente Build
+        type: choice
+        options:
+          - Somente Build
+          - Build + Deploy
+          - Atualizacao values.yaml
+      enabled-fortify:
+        description: "Habilitar Fortify SAST"
+        required: false
+        default: true
+        type: boolean
+      enabled-sonar:
+        description: "Habilitar testes Sonarqube"
+        required: false
+        default: true
+        type: boolean
+      enabled-acs:
+        description: "Habilitar Scan de Imagem ACS"
+        required: false
+        default: true
+        type: boolean
+      enabled-mend:
+        description: "Habilitar Scan Mend"
+        required: true
+        default: true
+        type: boolean
+jobs:
+  fortify-scan:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash .github/scripts/logger.sh {0}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/setup-logger
+      
+      - name: "Análise Estática Fortify"
+        env:
+          GITHUB_STEP_NAME: "Análise Estática Fortify"
+        run: ./run-fortify.sh
+
+      # Se falhar, faz upload do JSON de contexto desta máquina
+      - name: Upload Contexto para IA
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ai-context-fortify
+          path: /tmp/ai_failure_context.json
+
+  security-scan:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Security-scan
+        run: |
+          echo "Iniciando scan..."
+          sleep 2
+  acs-app-scan:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Acs-scan
+        run: |
+          echo "Iniciando scan..."
+          sleep 2
+
+  
+  ai-triage:
+    needs: [fortify-scan, security-scan, acs-app-scan]
+    if: failure()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download de todos os contextos de falha
+        uses: actions/download-artifact@v4
+        with:
+          path: ./failures
+          pattern: ai-context-*
+
+      - name: 🤖 Triagem com IA
+        run: |
+          # Junta todos os JSONs num único report para a IA
+          cat ./failures/**/*.json > final_report.json
+          
+          # Aqui você chama a sua API de IA (ex: OpenAI, Google Gemini, etc)
+          # Passando o conteúdo de final_report.json como contexto
+          echo "Enviando report para IA..."
+          # curl -X POST https://sua-api-ia.com/triage -d @final_report.json

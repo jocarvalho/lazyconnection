@@ -19,6 +19,21 @@ on:
         required: false
         default: true
         type: boolean
+      enabled-sonar:
+        description: "Habilitar testes Sonarqube"
+        required: false
+        default: true
+        type: boolean
+      enabled-acs:
+        description: "Habilitar Scan de Imagem ACS"
+        required: false
+        default: true
+        type: boolean
+      enabled-mend:
+        description: "Habilitar Scan Mend"
+        required: true
+        default: true
+        type: boolean
 
 jobs:
   build:

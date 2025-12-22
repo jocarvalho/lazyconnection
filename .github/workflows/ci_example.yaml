@@ -1,3 +1,6 @@
+defaults:
+  run:
+    shell: bash .github/workflows/logger.sh {0}
 name: CI Pipeline
 on:
   workflow_dispatch:

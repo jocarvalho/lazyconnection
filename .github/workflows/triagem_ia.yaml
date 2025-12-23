@@ -44,7 +44,7 @@ jobs:
       - name: "Análise Estática Fortify"
         env:
           GITHUB_STEP_NAME: "Análise Estática Fortify"
-        run: ./run-fortify.sh
+        run: ./.github/scripts/ffy/run-fortify.sh
 
       # Se falhar, faz upload do JSON de contexto desta máquina
       - name: Upload Contexto para IA

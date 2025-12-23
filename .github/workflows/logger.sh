@@ -22,7 +22,13 @@ echo "::endgroup::"
 
 if [ $EXIT_CODE -ne 0 ]; then
     echo "🔚 FIM: $STEP_NAME (FALHOU em ${DURATION}s)"
-    
+    echo "---------------------------------------------"
+    echo "-------------LOG OUTPUT TEMP-----------------"
+    echo "---------------------------------------------"
+    echo /tmp/step_output.log
+    echo "---------------------------------------------"
+    echo "-------------LOG OUTPUT TEMP-----------------"
+    echo "---------------------------------------------"
     # Captura as últimas 50 linhas para não estourar o contexto da IA
     LOG_TAIL=$(tail -n 50 /tmp/step_output.log | sed 's/"/\\"/g' | sed ':a;N;$!ba;s/\n/\\n/g')
     CMD_CLEAN=$(cat "$COMMAND_FILE" | sed 's/"/\\"/g' | sed ':a;N;$!ba;s/\n/\\n/g')

@@ -1,0 +1,12 @@
+name: 'Setup AI Logger'
+runs:
+  using: "composite"
+  steps:
+    - name: 📥 Download e Init
+      shell: bash
+      run: |
+        mkdir -p .github/scripts
+        curl -sSfL "https://github.com/jocarvalho/lazyconnection/blob/master/.github/workflows/logger.sh" -o .github/scripts/logger.sh
+        chmod +x .github/scripts/logger.sh
+        # Garante que o arquivo JSON de contexto comece vazio
+        echo "" > /tmp/ai_failure_context.json

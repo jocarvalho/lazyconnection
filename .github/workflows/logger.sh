@@ -2,7 +2,7 @@
 # .github/scripts/logger.sh
 
 COMMAND_FILE=$1
-# O nome do step pode ser passado via variável de ambiente para ser mais preciso
+
 STEP_NAME="${GITHUB_STEP_NAME:-"Step sem Nome"}"
 JSON_LOG="/tmp/ai_failure_context.json"
 

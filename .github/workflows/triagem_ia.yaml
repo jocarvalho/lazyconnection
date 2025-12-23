@@ -40,7 +40,14 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/setup-logger
-      
+      - name: "imprime logger.sh"
+        env:
+          GITHUB_STEP_NAME: "imprime logger.sh"
+        run: |
+          echo 'Vai imprimir o conteudo do .github/scripts/logger.sh'
+          cat .github/scripts/logger.sh
+          sleep 2
+          
       - name: "Análise Estática Fortify"
         env:
           GITHUB_STEP_NAME: "Análise Estática Fortify"
